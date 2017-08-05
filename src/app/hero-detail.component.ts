@@ -11,8 +11,7 @@ import { Hero } from './hero';
         <label>name: </label>
         <input [(ngModel)]="hero.name" placeholder="name"/>
       </div>
-    </div>
-  `
+    </div> `
 })
 
 export class HeroDetailComponent {
