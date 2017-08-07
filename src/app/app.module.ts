@@ -36,6 +36,7 @@ import { DashboardComponent } from './dashboard.component';
   declarations: [ AppComponent, DashboardComponent, HeroDetailComponent, HeroesComponent ],
   bootstrap:    [ AppComponent ],
   providers:    [ HeroService ], 
+
 })
 export class AppModule { }
 
