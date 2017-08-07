@@ -1,42 +1,104 @@
-import { Component, OnInit } from '@angular/core';
-import {Hero} from './hero';
-import { HeroService} from './hero.service';
+
+import { Component, NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { AgmCoreModule } from 'angular2-google-maps/core';
+
 
 @Component({
-  
   selector: 'my-app',
-  template: 
-  `<h1>{{title}}</h1>
+  styles: [`
+    .sebm-google-map-container {
+       height: 300px;
+     }
+  `],
+  template: `
+    <sebm-google-map 
+      [latitude]="lat"
+      [longitude]="lng"
+      [zoom]="zoom"
+      [disableDefaultUI]="false"
+      [zoomControl]="false"
+      (mapClick)="mapClicked($event)">
+    
+      <sebm-google-map-marker 
+          *ngFor="let m of markers; let i = index"
+          (markerClick)="clickedMarker(m.label, i)"
+          [latitude]="m.lat"
+          [longitude]="m.lng"
+          [label]="m.label"
+          [markerDraggable]="m.draggable"
+          (dragEnd)="markerDragEnd(m, $event)">
+          
+        <sebm-google-map-info-window>
+          <strong>InfoWindow content</strong>
+        </sebm-google-map-info-window>
+        
+      </sebm-google-map-marker>
+      
+      <sebm-google-map-circle [latitude]="lat + 0.3" [longitude]="lng" 
+          [radius]="5000"
+          [fillColor]="'red'"
+          [circleDraggable]="true"
+          [editable]="true">
+      </sebm-google-map-circle>
+
+    </sebm-google-map>
+`})
+export class App {
+  // google maps zoom level
+  zoom: number = 8;
   
-  <h2>My Heroes</h2>
-  <ul class="heroes">
-    <li *ngFor="let hero of heroes" [class.selected]="hero === selectedHero" (click)="onSelect(hero)">
-      <span class="badge">{{hero.id}}</span> {{hero.name}}
-    </li>
-  </ul>
- 
-  <hero-detail [hero]="selectedHero"></hero-detail>`,
-  providers: [HeroService]
-})
-
-export class AppComponent implements OnInit{
-  title = 'Tour of Heroes';
-  heroes: Hero[];
-  selectedHero: Hero;
-
-  constructor(private heroService: HeroService) { }
+  // initial center position for the map
+  lat: number = 51.673858;
+  lng: number = 7.815982;
   
-  //providers: [HeroService];
-
-  getHeroes(): void {
-    this.heroService.getHeroes().then(heroes => this.heroes = heroes);
+  clickedMarker(label: string, index: number) {
+    console.log(`clicked the marker: ${label || index}`)
   }
-
-  ngOnInit(): void {
-    this.getHeroes();
+  
+  mapClicked($event: MouseEvent) {
+    this.markers.push({
+      lat: $event.coords.lat,
+      lng: $event.coords.lng
+    });
   }
-
-  onSelect(hero: Hero): void {
-    this.selectedHero = hero;
-  }  
+  
+  markerDragEnd(m: marker, $event: MouseEvent) {
+    console.log('dragEnd', m, $event);
+  }
+  
+  markers: marker[] = [
+	  {
+		  lat: 51.673858,
+		  lng: 7.815982,
+		  label: 'A',
+		  draggable: true
+	  },
+	  {
+		  lat: 51.373858,
+		  lng: 7.215982,
+		  label: 'B',
+		  draggable: false
+	  },
+	  {
+		  lat: 51.723858,
+		  lng: 7.895982,
+		  label: 'C',
+		  draggable: true
+	  }
+  ]
 }
+// just an interface for type safety.
+interface marker {
+	lat: number;
+	lng: number;
+	label?: string;
+	draggable: boolean;
+}
+
+@NgModule({
+  imports: [ BrowserModule, AgmCoreModule.forRoot() ],
+  declarations: [ App ],
+  bootstrap: [ App ]
+})
+export class AppModule {}
