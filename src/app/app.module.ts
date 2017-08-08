@@ -3,6 +3,7 @@ import { BrowserModule }  from '@angular/platform-browser';
 import { FormsModule }    from '@angular/forms';
 import { RouterModule }   from '@angular/router';
 
+<<<<<<< HEAD
 import { AppComponent }        from './app.component';
 import { HeroDetailComponent } from './hero-detail.component';
 import { DashboardComponent }  from './dashboard.component';
@@ -43,6 +44,14 @@ import { HeroService }         from './hero.service';
     HeroService
   ],
   bootstrap: [ AppComponent ]
+=======
+import { AppComponent }  from './app.component';
+
+@NgModule({
+  imports:      [ BrowserModule, FormsModule ],
+  declarations: [ AppComponent ],
+  bootstrap:    [ AppComponent ]
+>>>>>>> bfa92f1fe801b7a3d0c2e3c4eca42f5c3d9f3d7d
 })
 export class AppModule {
 }
