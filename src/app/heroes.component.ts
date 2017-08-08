@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: [ './heroes.component.css' ]
 })
 
+// tslint:disable-next-line:one-line
 export class HeroesComponent implements OnInit{
   title = 'Tour of Heroes';
   heroes: Hero[];
@@ -34,4 +35,5 @@ export class HeroesComponent implements OnInit{
   gotoDetail(): void {
     this.router.navigate(['/detail', this.selectedHero.id]);
   }
+// tslint:disable-next-line:eofline
 }
